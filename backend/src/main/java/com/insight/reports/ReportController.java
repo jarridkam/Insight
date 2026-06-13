@@ -8,20 +8,10 @@ import java.util.List;
 @RestController
 public class ReportController
 {
+    private final ReportService reportService;
+
+    public ReportController(ReportService reportService) {this.reportService = reportService;}
+
     @GetMapping("/api/reports")
-    public List<ReportResponse> getReports()
-    {
-        return List.of(
-                new ReportResponse(
-                        1L,
-                        "Weekly Attendance Report",
-                        "DRAFT"
-                ),
-                new ReportResponse(
-                        2L,
-                        "Monthly Funding Report",
-                        "PUBLISHED"
-                )
-        );
-    }
+    public List<ReportResponse> getReports() {return reportService.getReports();}
 }

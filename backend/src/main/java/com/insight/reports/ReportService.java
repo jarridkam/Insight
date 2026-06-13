@@ -2,6 +2,7 @@ package com.insight.reports;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ReportService
@@ -26,6 +27,16 @@ public class ReportService
 
     public ReportResponse createReport(ReportCreateRequest request)
     {
-        
+        Report report = new Report(
+                request.getTitle(),
+                request.getStatus()
+        );
+
+        Report savedReport = reportRepository.save(report);
+        return new ReportResponse(
+                savedReport.getId(),
+                savedReport.getTitle(),
+                savedReport.getStatus()
+        );
     }
 }

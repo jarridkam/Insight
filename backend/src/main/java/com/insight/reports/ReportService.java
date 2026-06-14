@@ -39,4 +39,23 @@ public class ReportService
                 savedReport.getStatus()
         );
     }
+
+    public ReportResponse updateReport(Long id, ReportUpdateRequest request)
+    {
+        Report report = reportRepository.findById(id)
+                .orElseThrow();
+
+        report.setTitle(request.getTitle());
+        report.setStatus(request.getStatus());
+
+        Report savedReport = reportRepository.save(report);
+
+        return new ReportResponse(
+                savedReport.getId(),
+                savedReport.getTitle(),
+                savedReport.getStatus()
+        );
+    }
+
+    public void deleteReport(Long id){reportRepository.deleteById(id);}
 }

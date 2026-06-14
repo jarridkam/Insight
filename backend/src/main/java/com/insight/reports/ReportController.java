@@ -1,9 +1,6 @@
 package com.insight.reports;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,4 +16,16 @@ public class ReportController
 
     @PostMapping("/api/reports")
     public ReportResponse createReport(@RequestBody ReportCreateRequest request) {return reportService.createReport(request);}
+
+    @PutMapping("/api/reports/{id}")
+    public ReportResponse updateReport(
+            @PathVariable Long id,
+            @RequestBody ReportUpdateRequest request
+    )
+    {
+        return reportService.updateReport(id, request);
+    }
+
+    @DeleteMapping("/api/reports/{id}")
+    public void deleteReport(@PathVariable Long id){reportService.deleteReport(id);}
 }

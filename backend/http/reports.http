@@ -1,1 +1,7 @@
-DELETE http://localhost:8080/api/reports/2
+PUT http://localhost:8080/api/reports/999999
+Content-Type: application/json
+
+{
+  "title": "Ghost Report",
+  "status": "DRAFT"
+}

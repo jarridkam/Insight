@@ -1,6 +1,7 @@
 package com.insight.reports;
 
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -15,12 +16,12 @@ public class ReportController
     public List<ReportResponse> getReports(){return reportService.getReports();}
 
     @PostMapping("/api/reports")
-    public ReportResponse createReport(@RequestBody ReportCreateRequest request) {return reportService.createReport(request);}
+    public ReportResponse createReport(@Valid @RequestBody ReportCreateRequest request) {return reportService.createReport(request);}
 
     @PutMapping("/api/reports/{id}")
     public ReportResponse updateReport(
             @PathVariable Long id,
-            @RequestBody ReportUpdateRequest request
+            @Valid @RequestBody ReportUpdateRequest request
     )
     {
         return reportService.updateReport(id, request);

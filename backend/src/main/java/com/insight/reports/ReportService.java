@@ -43,7 +43,7 @@ public class ReportService
     public ReportResponse updateReport(Long id, ReportUpdateRequest request)
     {
         Report report = reportRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ReportNotFoundException(id));
 
         report.setTitle(request.getTitle());
         report.setStatus(request.getStatus());
@@ -57,5 +57,13 @@ public class ReportService
         );
     }
 
-    public void deleteReport(Long id){reportRepository.deleteById(id);}
+    public void deleteReport(Long id)
+    {
+        if (!reportRepository.existsById(id))
+        {
+            throw new ReportNotFoundException(id);
+        }
+
+        reportRepository.deleteById(id);
+    }
 }

@@ -1,7 +1,1 @@
-POST http://localhost:8080/api/reports
-Content-Type: application/json
-
-{
-  "title": "Bad Status Report",
-  "status": "BANANA"
-}
+GET http://localhost:8080/api/reports

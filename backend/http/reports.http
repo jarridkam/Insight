@@ -2,6 +2,6 @@ POST http://localhost:8080/api/reports
 Content-Type: application/json
 
 {
-  "title": "Quarterly Funding Report",
-  "status": "DRAFT"
+  "title": "Bad Status Report",
+  "status": "BANANA"
 }

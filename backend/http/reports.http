@@ -1,7 +1,7 @@
-PUT http://localhost:8080/api/reports/999999
+POST http://localhost:8080/api/reports
 Content-Type: application/json
 
 {
-  "title": "Ghost Report",
+  "title": "Quarterly Funding Report",
   "status": "DRAFT"
 }

@@ -1,16 +1,17 @@
 package com.insight.reports;
 
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class ReportService
 {
     private final ReportRepository reportRepository;
 
-    public ReportService(ReportRepository _reportRepository){
-        this.reportRepository = _reportRepository;
+    public ReportService(ReportRepository reportRepository)
+    {
+        this.reportRepository = reportRepository;
     }
 
     public List<ReportResponse> getReports()
@@ -33,6 +34,7 @@ public class ReportService
         );
 
         Report savedReport = reportRepository.save(report);
+
         return new ReportResponse(
                 savedReport.getId(),
                 savedReport.getTitle(),

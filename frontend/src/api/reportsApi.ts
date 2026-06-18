@@ -11,6 +11,19 @@ export type CreateResponseRequest = {
 
 const API_BASE_URL = "http://localhost:8080";
 
+async function getErrorMessage(response : Response): Promise<string>
+{
+    try
+    {
+        const error_body = await response.json();
+
+        if(typeof error_body.message === "string")
+        {return error_body.message;}
+        return "Something went wrong."
+    }
+    catch {return "Something went wrong."}
+}
+
 export async function getReports(): Promise<ReportResponse[]>
 {
     const response = await fetch(`${API_BASE_URL}/api/reports`);
@@ -32,5 +45,18 @@ export async function createReport(request: CreateResponseRequest): Promise<Repo
 
     if(!response.ok){throw new Error("Failed to create report");}
     return response.json();
+}
+
+export async function deleteReport(id: number): Promise<void>
+{
+    const response = await fetch(`${API_BASE_URL}/api/reports/${id}`,
+        {
+            method: "DELETE",
+        });
+    if(!response.ok)
+    {
+        const error_message = await getErrorMessage(response);
+        throw new Error(error_message);
+    }
 }
 

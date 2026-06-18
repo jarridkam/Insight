@@ -1,6 +1,7 @@
 import { type FormEvent, useEffect, useState } from "react";
 import {
   createReport,
+  deleteReport,
   getReports,
   type ReportResponse,
 } from "./api/reportsApi";
@@ -11,25 +12,33 @@ function App() {
   const [newStatus, setNewStatus] = useState("DRAFT");
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
+  const [deletingReportId, setDeletingReportId] = useState<number | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   async function loadReports() {
     try {
       const reports_from_api = await getReports();
       setReports(reports_from_api);
-    } catch {
-      setErrorMessage("Could not load reports.");
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Could not load reports.");
+      }
     }
   }
+
   useEffect(() => {
     async function loadInitialReports() {
       try {
         const reports_from_api = await getReports();
         setReports(reports_from_api);
-      } catch {
-        setErrorMessage("Could not load reports.");
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage("Could not load reports.");
+        }
       } finally {
         setIsLoading(false);
       }
@@ -59,11 +68,35 @@ function App() {
 
       setNewTitle("");
       setNewStatus("DRAFT");
+
       await loadReports();
-    } catch {
-      setErrorMessage("Could not create report.");
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Could not create report.");
+      }
     } finally {
       setIsCreating(false);
+    }
+  }
+
+  async function handleDeleteReport(id: number) {
+    try {
+      setDeletingReportId(id);
+      setErrorMessage(null);
+
+      await deleteReport(id);
+
+      await loadReports();
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else {
+        setErrorMessage("Could not delete report.");
+      }
+    } finally {
+      setDeletingReportId(null);
     }
   }
 
@@ -110,6 +143,14 @@ function App() {
               {reports.map((report) => (
                   <li key={report.id}>
                     <strong>{report.title}</strong> — {report.status}
+                    {" "}
+                    <button
+                        type="button"
+                        onClick={() => void handleDeleteReport(report.id)}
+                        disabled={deletingReportId === report.id}
+                    >
+                      {deletingReportId === report.id ? "Deleting..." : "Delete"}
+                    </button>
                   </li>
               ))}
             </ul>

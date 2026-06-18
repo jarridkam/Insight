@@ -1,7 +1,1 @@
-POST http://localhost:8080/api/reports
-Content-Type: application/json
-
-{
-  "title": "Created From Chapter 11",
-  "status": "DRAFT"
-}
+DELETE http://localhost:8080/api/reports/5

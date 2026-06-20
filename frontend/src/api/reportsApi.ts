@@ -7,7 +7,12 @@ export type ReportResponse = {
 export type CreateResponseRequest = {
     title: string;
     status: string;
-}
+};
+
+export type UpdateReportRequest = {
+    title: string;
+    status: string;
+};
 
 const API_BASE_URL = "http://localhost:8080";
 
@@ -47,6 +52,7 @@ export async function createReport(request: CreateResponseRequest): Promise<Repo
     return response.json();
 }
 
+
 export async function deleteReport(id: number): Promise<void>
 {
     const response = await fetch(`${API_BASE_URL}/api/reports/${id}`,
@@ -60,3 +66,23 @@ export async function deleteReport(id: number): Promise<void>
     }
 }
 
+export async function updateReport(
+    id: number,
+    request: UpdateReportRequest,
+): Promise<ReportResponse>
+{
+    const response = await fetch(`${API_BASE_URL}/api/reports/${id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(request),
+    });
+
+    if(!response.ok)
+    {
+        throw new Error("Failed to update report");
+    }
+
+    return response.json();
+}
